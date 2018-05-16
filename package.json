@@ -1,0 +1,19 @@
+{
+  "name": "currencyexchange",
+  "version": "1.0.0",
+  "description": "Currency exchange rest service",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marclafratta/currencyexchange.git"
+  },
+  "author": "Marc Lafratta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/marclafratta/currencyexchange/issues"
+  },
+  "homepage": "https://github.com/marclafratta/currencyexchange#readme"
+}
