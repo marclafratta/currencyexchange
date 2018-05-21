@@ -2,9 +2,10 @@
   "name": "currencyexchange",
   "version": "1.0.0",
   "description": "Currency exchange rest service",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "test"
+    "start": "node server.js",
+    "test": "node_modules/.bin/mocha"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,15 @@
   "bugs": {
     "url": "https://github.com/marclafratta/currencyexchange/issues"
   },
-  "homepage": "https://github.com/marclafratta/currencyexchange#readme"
+  "homepage": "https://github.com/marclafratta/currencyexchange#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "restify": "^7.1.2"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
+    "mocha": "^5.2.0",
+    "nock": "^9.2.6"
+  }
 }
