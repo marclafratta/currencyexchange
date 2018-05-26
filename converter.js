@@ -32,6 +32,10 @@ module.exports = class CurrencyConverter{
                     conversion_currency: targetCurrency,
                     conversion_amount: targetAmount
                 })
+            }).catch(function (error) {
+                console.log(error)
+                reject(error);
+        
             })
         })
     }

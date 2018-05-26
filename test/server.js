@@ -5,8 +5,6 @@ const chaiHttp = require('chai-http')
 const nock = require('nock');
 
 const converter = require('../converter')
-//const mockClient = require('../exchangeRatesClientMock')
-//const realClient = require('../exchangeRatesClient')
 const server = require('../server')
 
 const usd2011_06_03 = require('./apiResponses/usd2011-06-03')
@@ -25,7 +23,7 @@ describe('2011-06-03 USD to CAD', () =>{
 
     it('Gets conversion USD to CAD on 2011-06-03', (done) => {
         chai.request(server)
-            .get('/convert/USD/CAD/?date=2011-06-03&amount=100')
+            .get('/USD/CAD/2011-06-03/100')
             .end((err, res) => {
                 expect(res).to.have.status(200)
                 expect(res.body).to.deep.equal({
@@ -49,7 +47,7 @@ describe('2007-07-12 GBP to SEK', () => {
 
     it('Gets conversion GBP to SEK on 2007-07-12', (done) => {
         chai.request(server)
-            .get('/convert/GBP/SEK/?date=2007-07-12&amount=303')
+            .get('/GBP/SEK/2007-07-12/303')
             .end((err, res) => {
                 //console.log(res.text)
                 expect(res.body).to.deep.equal({
@@ -73,7 +71,7 @@ describe('2004-08-07 EUR to PLN', () => {
 
     it('Gets conversion EUR to PLN on 2004-08-07', (done) => {
         chai.request(server)
-            .get('/convert/EUR/PLN/?date=2004-08-07&amount=5')
+            .get('/EUR/PLN/2004-08-07/5')
             .end((err, res) => {
                 expect(res.body).to.deep.equal({
                     "date": "2004-08-07",
@@ -96,7 +94,7 @@ describe('2004-08-07 EUR to PLN', () => {
 
     it('Gets conversion ZAR to TRY on 2017-02-09', (done) => {
         chai.request(server)
-            .get('/convert/ZAR/TRY/?date=2017-02-09&amount=132')
+            .get('/ZAR/TRY/2017-02-09/132')
             .end((err, res) => {
                 expect(res.body).to.deep.equal({
                     "date": "2017-02-09",
@@ -109,4 +107,56 @@ describe('2004-08-07 EUR to PLN', () => {
             })
         
     })
+    it('capitalizes currency symbols for ZAR to TRY on 2017-02-09', (done) => {
+        chai.request(server)
+            .get('/zar/try/2017-02-09/132')
+            .end((err, res) => {
+                expect(res.body).to.deep.equal({
+                    "date": "2017-02-09",
+                    "base_currency": "ZAR",
+                    "base_amount": 132,
+                    "conversion_currency": "TRY",
+                    "conversion_amount": 36.3528
+                })
+                done()
+            })
+
+    })
+    
+})
+
+describe('data validation ',() => {
+    it('rejects request with empty base currency', (done) =>{
+        chai.request(server)
+            .get('//TRY/2017-02-09/132')
+            .end((err,res) => {
+                expect(res.body).to.equal('Base currency missing')
+            })
+            done()
+    })
+    it('rejects request with empty conversion currency', (done) => {
+        chai.request(server)
+            .get('/TRY//2017-02-09/132')
+            .end((err, res) => {
+                expect(res.body).to.equal('Conversion currency missing')
+            })
+        done()
+    })
+    it('rejects request with empty date ', (done) => {
+        chai.request(server)
+            .get('/TRY/USD//132')
+            .end((err, res) => {
+                expect(res.body).to.equal('Date missing')
+            })
+        done()
+    })
+    it('rejects request with empty amount ', (done) => {
+        chai.request(server)
+            .get('/TRY/USD/2017-02-09/')
+            .end((err, res) => {
+                expect(res.body).to.equal('Amount missing')
+            })
+        done()
+    })
+
 })

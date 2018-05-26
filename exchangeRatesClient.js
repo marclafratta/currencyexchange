@@ -12,7 +12,8 @@ exports.getRatio = function (baseCurrency, targetCurrency, date) {
             //console.log('target rate ' + targetCurrency + " " + liveResults.rates[targetCurrency] )
             resolve(liveResults.rates[targetCurrency])
         }).catch(function(){
-            reject("shit happened")
+            console.log('client error')
+            reject("client error")
         })
     })
 }
